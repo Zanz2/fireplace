@@ -148,17 +148,10 @@ class BaseGame(Entity):
 	def find_children(self):
 		if self.is_terminal(): return
 		#All possible successors of this board state (not really, see below)
-
-		#card_orders = copy.deepcopy(self.current_player.hand)
-		#max_mana = self.current_player.mana
-		#card_orders_filtered = CardList()
-		#for card in card_orders:
-		#	if card.cost <= max_mana + 1:
-		#		card_orders_filtered.append(card)
-		#all_permutations = itertools.permutations(card_orders_filtered)
+		# limited to 12 random ones
 		children_set = set()
 		memo = {}
-		for i in range(8):
+		for i in range(12):
 			deep_self = copy.deepcopy(self, memo)
 			#deep_self = cPickle.loads(cPickle.dumps(self, -1))
 			# attempt to implement undo function here to not need deepcopy or use json serialize and deserialize

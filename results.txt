@@ -15,3 +15,8 @@ expl weight: 10 @ 50 rollouts
 won game, currently:28/34
 
 ODSTRANU ENEMY RANDOM > 0.5 DA PLAYA KARTE, dodav shuffled hand shuffled attacks na mcts
+expl weight 10 @ 100 rollouts @ 8 children
+23/29
+expl weight 4 @ 60 rollouts @ 12 children
+won game, currently:21/29
+expl weight 1.5 @ 60 rollouts @ 12 children

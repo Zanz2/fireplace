@@ -217,12 +217,12 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 					card = random.choice(card.choose_cards)
 				if card.requires_target():
 					target = random.choice(card.targets)
-				print("Playing %r on %r" % (card, target))
+				#print("Playing %r on %r" % (card, target))
 				if (card.is_playable and not card.requires_target) or (card.is_playable and card.requires_target() and target is not None): card.play(target=target)
 
 				if player.choice:
 					choice = random.choice(player.choice.cards)
-					print("Choosing card %r" % (choice))
+					#print("Choosing card %r" % (choice))
 					player.choice.choose(choice)
 
 				continue
@@ -260,7 +260,7 @@ def play_full_mcts_game() -> ".game.Game":
 		player.choice.choose(*cards_to_mulligan)
 
 	while True:
-		for _ in range(100):
+		for _ in range(60):
 			try:
 				tree.do_rollout(game)
 			except GameOver:
@@ -269,7 +269,7 @@ def play_full_mcts_game() -> ".game.Game":
 			game = tree.choose(game)
 		except RuntimeError:
 			return game
-		print("# children of tree: " + str(len(tree.children)))
+		print("number of expanded nodes on tree: " + str(len(tree.children)))
 		play_turn(game)
 
 
