@@ -20,3 +20,6 @@ expl weight 10 @ 100 rollouts @ 8 children
 expl weight 4 @ 60 rollouts @ 12 children
 won game, currently:21/29
 expl weight 1.5 @ 60 rollouts @ 12 children
+won game, currently:20/32
+expl weight 0.9 @ 60 rollouts @ 12 children
+won game, currently:13/14
