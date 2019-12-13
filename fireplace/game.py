@@ -125,7 +125,7 @@ class BaseGame(Entity):
 					if card.requires_target():
 						target = random.choice(card.targets)
 					#print("Playing %r on %r" % (card, target))
-					if (card.is_playable and not card.requires_target) or (card.is_playable and card.requires_target() and target is not None): card.play(target=target)
+					if (card.is_playable and not card.requires_target()) or (card.is_playable and card.requires_target() and target is not None): card.play(target=target)
 
 					if player.choice:
 						choice = random.choice(player.choice.cards)
@@ -178,8 +178,8 @@ class BaseGame(Entity):
 
 	def reward(self):
 		#"Assumes `self` is terminal node. 1=win, 0=loss, .5=tie, etc"
-		if self.players[0].playstate == PlayState.TIED: return 0
-		if self.players[0].playstate == PlayState.LOST: return -1
+		if self.players[0].playstate == PlayState.TIED: return 0.5
+		if self.players[0].playstate == PlayState.LOST: return 0
 		if self.players[0].playstate == PlayState.WON: return 1
 
 	def __hash__(self):

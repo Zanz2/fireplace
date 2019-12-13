@@ -218,7 +218,7 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 				if card.requires_target():
 					target = random.choice(card.targets)
 				#print("Playing %r on %r" % (card, target))
-				if (card.is_playable and not card.requires_target) or (card.is_playable and card.requires_target() and target is not None): card.play(target=target)
+				if (card.is_playable and not card.requires_target()) or (card.is_playable and card.requires_target() and target is not None): card.play(target=target)
 
 				if player.choice:
 					choice = random.choice(player.choice.cards)
