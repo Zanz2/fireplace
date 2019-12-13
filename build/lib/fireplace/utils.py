@@ -262,7 +262,7 @@ def play_full_mcts_game() -> ".game.Game":
 	while True:
 		#print(game.current_player)
 		#game2 = copy.deepcopy(game)
-		for _ in range(500):
+		for _ in range(60):
 			try:
 				tree.do_rollout(game)
 			except GameOver:

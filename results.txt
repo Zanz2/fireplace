@@ -27,3 +27,14 @@ expl weight 0.9 @ 60 rollouts @ 8 children
 1/3 je slabo zgledalo sm kr ustavu
 expl weight 0.9 @ 60 rollouts @ 12 children (new rewards 0, 0.5,1)
 won game on turn: 35, currently:123/159(tied:0)
+-- na tej točki ugotoviv da če karta nima targetov je ne igra ( bug v kodi, sm to fiksu, iiiinn...)
+lost game on turn: 35, currently:12/43(tied:0) ne dela.
+expl weight 20 @ 60 rollouts @ 16 children
+lost game on turn: 30, currently:41/66
+expl weight 1 @ 60 rollouts @ 16 children
+lost game on turn: 30, currently:24/35
+expl weight 1 @ 100 rollouts @ 16 children
+lost game on turn: 18, currently:5/11
+won game on turn: 15, currently:3/4(tied:0)
+won game on turn: 27, currently:4/7(tied:0)
+expl weight 1.5 @ 500 rollouts @ 16 children
