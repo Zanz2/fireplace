@@ -23,3 +23,5 @@ expl weight 1.5 @ 60 rollouts @ 12 children
 won game, currently:20/32
 expl weight 0.9 @ 60 rollouts @ 12 children
 won game, currently:13/14
+expl weight 0.9 @ 60 rollouts @ 8 children
+1/3 je slabo zgledalo sm kr ustavu

@@ -260,6 +260,8 @@ def play_full_mcts_game() -> ".game.Game":
 		player.choice.choose(*cards_to_mulligan)
 
 	while True:
+		#print(game.current_player)
+		#game2 = copy.deepcopy(game)
 		for _ in range(60):
 			try:
 				tree.do_rollout(game)
@@ -269,6 +271,10 @@ def play_full_mcts_game() -> ".game.Game":
 			game = tree.choose(game)
 		except RuntimeError:
 			return game
+		#if game2.__hash__() == game.__hash__() : print("enaka")
+		#print(game.current_player)
+		game.end_turn()
+		#print(game.current_player)
 		print("number of expanded nodes on tree: " + str(len(tree.children)))
 		play_turn(game)
 

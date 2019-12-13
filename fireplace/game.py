@@ -37,6 +37,7 @@ class BaseGame(Entity):
 		self.setaside = CardList()
 		self._action_stack = 0
 		self.identifier = random.getrandbits(128)
+		self.ended_on = 0
 
 	def __repr__(self):
 		return "%s(players=%r)" % (self.__class__.__name__, self.players)
@@ -287,6 +288,7 @@ class BaseGame(Entity):
 						player.playstate = PlayState.LOST
 					else:
 						player.playstate = PlayState.WON
+			self.ended_on = self.turn
 			self.state = State.COMPLETE
 			self.manager.step(self.next_step, Step.FINAL_WRAPUP)
 			self.manager.step(self.next_step, Step.FINAL_GAMEOVER)

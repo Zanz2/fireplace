@@ -21,16 +21,27 @@ def test_full_game():
 	else:
 		won = 0
 		lost = 0
-		for i in range(100):
+		tied = 0
+		i = 0
+		while(True):
 			game = play_full_mcts_game()
 			mcts_player = game.players[0]
-
+			print("mcts hp: " + str(game.players[0].hero.health) + ", enemy hp: "+ str(game.players[1].hero.health))
+			print("mcts hand count:"+str(len(game.players[0].hand))+" , graveyard count:"+str(len(game.players[0].graveyard))+" ,deck count: "+str(len(game.players[0].deck)))
+			print("mcts field count, max mana count:"+str(len(game.players[0].field))+" , "+str(game.players[0]._max_mana))
+			print("enemy hand count:" + str(len(game.players[1].hand)) + " , graveyard count:" + str(len(game.players[1].graveyard)) + " ,deck count: " + str(len(game.players[1].deck)))
+			print("enemy field count, max mana count:" + str(len(game.players[1].field)) + " , " + str(game.players[1]._max_mana))
+			print("board minion total count: "+str(len(game.board)))
 			if mcts_player.playstate == PlayState.WON:
 				won += 1
-				print("won game, currently:" + str(won) + "/" + str(i+1))
+				print("won game on turn: "+str(game.ended_on)+", currently:" + str(won) + "/" + str(i+1) + "(tied:"+str(tied)+")")
+			elif mcts_player.playstate == PlayState.TIED:
+				tied += 1
+				print("tied game on turn: " + str(game.ended_on) + ", currently:" + str(won) + "/" + str(i + 1) + "(tied:" + str(tied) + ")")
 			else:
 				lost += 1
-				print("lost game, currently:" + str(won) + "/" + str(i+1))
+				print("lost game on turn: "+str(game.ended_on)+", currently:" + str(won) + "/" + str(i+1))
+			i = i + 1
 		print("w/l")
 		print(won)
 		print(lost)
