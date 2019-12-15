@@ -106,13 +106,6 @@ class BaseGame(Entity):
 		player = passed_game.current_player
 
 		while True:
-			heropower = player.hero.power
-			if heropower.is_usable() and random.random() < 0.1:
-				if heropower.requires_target():
-					heropower.use(target=random.choice(heropower.targets))
-				else:
-					heropower.use()
-				continue
 
 			# iterate over our hand and play whatever is playable
 			shuffled_hand = player.hand
@@ -143,6 +136,14 @@ class BaseGame(Entity):
 
 			break
 
+			heropower = player.hero.power
+			if heropower.is_usable():
+				if heropower.requires_target():
+					heropower.use(target=random.choice(heropower.targets))
+				else:
+					heropower.use()
+				continue
+
 		passed_game.end_turn()
 		return passed_game
 
@@ -152,7 +153,7 @@ class BaseGame(Entity):
 		# limited to 12 random ones
 		children_set = set()
 		memo = {}
-		for i in range(16):
+		for i in range(30):
 			deep_self = copy.deepcopy(self, memo)
 			#deep_self = cPickle.loads(cPickle.dumps(self, -1))
 			# attempt to implement undo function here to not need deepcopy or use json serialize and deserialize

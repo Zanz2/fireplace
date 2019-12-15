@@ -13,7 +13,7 @@ import math
 class MCTS:
 	"Monte Carlo tree searcher. First rollout the tree then choose a move."
 
-	def __init__(self, exploration_weight=1.5):
+	def __init__(self, exploration_weight):
 		self.Q = defaultdict(int)  # total reward of each node
 		self.N = defaultdict(int)  # total visit count for each node
 		self.children = dict()  # children of each node
@@ -92,7 +92,7 @@ class MCTS:
 		assert all(n in self.children for n in self.children[node])
 
 		log_N_vertex = math.log(self.N[node])
-
+		#print("log vertex: "+str(log_N_vertex))
 		def uct(n):
 			"Upper confidence bound for trees"
 			return self.Q[n] / self.N[n] + self.exploration_weight * math.sqrt(

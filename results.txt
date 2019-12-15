@@ -37,4 +37,9 @@ expl weight 1 @ 100 rollouts @ 16 children
 lost game on turn: 18, currently:5/11
 won game on turn: 15, currently:3/4(tied:0)
 won game on turn: 27, currently:4/7(tied:0)
-expl weight 1.5 @ 500 rollouts @ 16 children
+expl weight 50 @ 500 rollouts @ 16 children (mulligan je še treba fixat da bo tole good)
+won game on turn: 15, currently:375/675(tied:0)
+won game on turn: 17, currently:382/666
+expl weight 1.5 @ 100 rollouts @ 30 children ( z fixed mulligan za oba, mcts in bota)
+42/71
+expl weight 1.5 @ 200 rollouts @ 30 children

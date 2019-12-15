@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import json
 import sys
 
 from hearthstone.enums import PlayState
@@ -13,6 +14,8 @@ sys.path.append("..")
 
 def test_full_game():
 	do_mcts = True
+	starting_expl_weight = -12.5
+	log_dict = {}
 	if not do_mcts:
 		try:
 			play_full_game()
@@ -24,8 +27,16 @@ def test_full_game():
 		tied = 0
 		i = 0
 		while(True):
-			game = play_full_mcts_game()
+			if( i%100 == 0 and i!= 0): # 100 games at a given expl weight
+				starting_expl_weight += 2.5
+				log_dict[starting_expl_weight] = [won,lost,tied]
+				won, lost, tied, i = 0
+				output = json.dumps(log_dict, indent=4)
+				with open('result.txt', 'w') as outfile:
+					json.dump(output, outfile)
+			game = play_full_mcts_game(expl_weight=starting_expl_weight)
 			mcts_player = game.players[0]
+			print("expl_weight: "+str(starting_expl_weight))
 			print("mcts hp: " + str(game.players[0].hero.health) + ", enemy hp: "+ str(game.players[1].hero.health))
 			print("mcts hand count:"+str(len(game.players[0].hand))+" , graveyard count:"+str(len(game.players[0].graveyard))+" ,deck count: "+str(len(game.players[0].deck)))
 			print("mcts field count, max mana count:"+str(len(game.players[0].field))+" , "+str(game.players[0]._max_mana))
