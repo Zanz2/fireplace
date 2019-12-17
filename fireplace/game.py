@@ -148,7 +148,7 @@ class BaseGame(Entity):
 		return passed_game
 
 	def find_children(self):
-		if self.is_terminal(): return
+		if self.is_terminal(): return set()
 		#All possible successors of this board state (not really, see below)
 		# limited to 12 random ones
 		children_set = set()
@@ -173,7 +173,7 @@ class BaseGame(Entity):
 
 	def is_terminal(self):
 		#"Returns True if the node has no children"
-		if self.ended:
+		if self.ended_on !=0:
 			return True
 		return False
 

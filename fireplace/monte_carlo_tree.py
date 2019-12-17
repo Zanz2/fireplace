@@ -32,11 +32,12 @@ class MCTS:
 				return float("-inf")  # avoid unseen moves
 			return self.Q[n] / self.N[n]  # average reward
 
-		return max(self.children[node], key=score)
+		result = max(self.children[node], key=score)
+		return result
 
 	def do_rollout(self, node): # has func calls that dont work
 		"Make the tree one layer better. (Train for one iteration.)"
-		#node = copy.deepcopy(node) # remove this maybe, unnecessary
+		node = copy.deepcopy(node) # remove this maybe, unnecessary
 		path = self._select(node)
 		leaf = path[-1]
 		self._expand(leaf)
@@ -48,10 +49,14 @@ class MCTS:
 		path = []
 		while True:
 			path.append(node)
-			if node not in self.children or not self.children[node]:
+			if node not in self.children or not self.children[node] or node.is_terminal():
 				# node is either unexplored or terminal
 				return path
-			unexplored = self.children[node] - self.children.keys()
+			#unexplored = self.children[node] - self.children.keys()
+			unexplored = []
+			for child_of_game in self.children[node]:
+				if(child_of_game not in self.children):
+					unexplored.append(child_of_game)
 			if unexplored:
 				n = unexplored.pop()
 				path.append(n)

@@ -2,7 +2,7 @@
 -- Uvod
 (kaj je hearthstone,problem, motivacija, hearthstim => fireplace, vprašanja in hipoteze, uporabljeni angleški izrazi (druge diplomske)).
 -- Hearthstone (bolj podrobno)
-kaj je hearthstone (osnove igre, pravila, zaključek igre, kompleksnost igre in "game state-a" še kej?)
+kaj je hearthstone (osnove igre, pravila, zaključek igre, kompleksnost igre in "game state-a" !!še dodaj če ti pride na pamet!!)
 -- MCTS
 principi na hitro, delovenje, prednosti in slabosti, zgodovina uporabe MCTS v igrah(mogoče še prednosti slabosti tega v primerjavi z drugimi (total war AI)
 -- Načrtovanje implementacije
@@ -40,8 +40,14 @@ integracija s prilagojenim razredom za MCTS (izvor tic tac toe mcts simulator gi
    		V hearthstonu poteza traja maksimalno 75 sekund, zato izvajamo simulacije za 74 sekund, koliko nam jih pa uspe narediti v tem času pa variira od velikosti drevesa in kje smo v igri (začetek ali konec)
    - Beleženje rezultatov (izvedba, omejitev hitrosti)
    -
--- Problemi implementacije dejanske avtomatizacije igre (legalnost)
-	- Kaj bi še potreboval ( s kolegom ideja ( "predictanje" decka, ki ga igra nasprotnik))
+
 -- Ugotovitve, rezultati
+
+-- Za naprej ( V smislu, kaj bi še lahko naredil) :
+ 	- Problemi implementacije dejanske avtomatizacije igre (legalnost, razvijalci igre načeloma strogo proti tem)
+	- Ideja za dobro simulacijo v igri => s kolegom ideja "predictanje" decka, ki ga igra nasprotnik, tako da lahko prave igre z integracijo v hearthstone client uspešno simuliramo ( nasprotnikovo potezo bi lahko bolje simulirali)
+	- Lahko bi vključil sebe v igro z izdelavo hearthstone CLI (recimo, nasprotnik je mcts, mene vpraša igra, kaj hočeš igrati, na razpolago imaš karte X Y, potem bi napisal "X" in bi igral karto "X"
+		To bi bil skoraj projekt za sebe ker je ogromno mehanizmov in informacij, ki jih bi moral elegantno vključiti v dober CLI (stanja igre, napadanja tarč, output pri naključnih efektih, da vem kaj se je zgodilo...)
+	- Nagrade za različana stanja v igri ( nebi bil samo čisti random, ampak da bi ga nekot prilagodil da dobi točke za ubijanje nasprotnikovih enot )
 
 -- Zaključek, zahvale

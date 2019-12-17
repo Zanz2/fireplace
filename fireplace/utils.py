@@ -329,13 +329,14 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 		try:
 			game = tree.choose(game)
 		except RuntimeError:
-			return game
+			break
 		#if game2.__hash__() == game.__hash__() : print("enaka")
 		#print(game.current_player)
 		game.end_turn()
 		#print(game.current_player)
 		print("# expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: "+str(rollout_num))
 		play_turn(game)
-
+		game.reset_identifier()
+		if game.ended_on != 0: break
 
 	return game
