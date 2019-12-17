@@ -113,9 +113,9 @@ class BaseGame(Entity):
 			for card in shuffled_hand:
 				if card.is_playable():
 					target = None
-					if card.must_choose_one:
+					if card.must_choose_one and card.choose_cards is not None:
 						card = random.choice(card.choose_cards)
-					if card.requires_target():
+					if card.requires_target() and card.targets is not None:
 						target = random.choice(card.targets)
 					#print("Playing %r on %r" % (card, target))
 					if (card.is_playable() and not card.requires_target()) or (card.is_playable() and card.requires_target() and target is not None): card.play(target=target)

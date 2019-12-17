@@ -1,5 +1,6 @@
 import os.path
 import random
+import time
 from bisect import bisect
 from importlib import import_module
 from pkgutil import iter_modules
@@ -208,9 +209,9 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 		for card in shuffled_hand:
 			if card.is_playable():
 				target = None
-				if card.must_choose_one:
+				if card.must_choose_one and card.choose_cards is not None:
 					card = random.choice(card.choose_cards)
-				if card.requires_target():
+				if card.requires_target() and card.targets is not None:
 					target = random.choice(card.targets)
 				# print("Playing %r on %r" % (card, target))
 				if (card.is_playable() and not card.requires_target()) or (
@@ -272,9 +273,12 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 	while True:
 		#print(game.current_player)
 		#game2 = copy.deepcopy(game)
-		for _ in range(500):
+		t_end = time.time() + 74
+		rollout_num = 0
+		while time.time() < t_end:
 			try:
 				tree.do_rollout(game)
+				rollout_num += 1
 			except GameOver:
 				pass
 		try:
@@ -285,7 +289,7 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 		#print(game.current_player)
 		game.end_turn()
 		#print(game.current_player)
-		print("number of expanded nodes on tree: " + str(len(tree.children)))
+		print("# expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: "+str(rollout_num))
 		play_turn(game)
 
 
