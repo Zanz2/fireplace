@@ -98,6 +98,42 @@ def random_draft(card_class: CardClass, exclude=[]):
 
 	return deck
 
+def mcts_draft(card_class: CardClass, exclude=[]):
+	"""
+	Return a midrange deck for mage
+	"""
+	from . import cards
+	from .deck import Deck
+
+	deck = []
+	collection = []
+	# hero = card_class.default_hero
+	include = ["Arcane Missiles","Frostbolt","Arcane Intellect","Fireball","Polymorph","Water Elemental","Flamestrike","Acidic Swamp Ooze","Bloodfen Raptor","Razorfen Hunter","Shattered Sun Cleric","Chillwind Yeti","Gnomish Inventor","Gurubashi Berserker","Boulderfist Ogre"]
+	for card in cards.db.keys():
+		if card in exclude:
+			continue
+		cls = cards.db[card]
+		if not cls.collectible:
+			continue
+		if cls.type == CardType.HERO:
+			# Heroes are collectible...
+			continue
+		if cls.card_class and cls.card_class not in [card_class, CardClass.NEUTRAL]:
+			# Play with more possibilities
+			continue
+		if cls.name in include:
+			if deck.count(cls) == 0:
+				deck.append(cls)
+				deck.append(cls)
+		continue
+
+	if len(deck) < Deck.MAX_CARDS:
+		raise Exception('Deck wasnt completely filled. Deck count was: {}'.format(Deck.MAX_CARDS))
+	#card = random.choice(collection)
+	#if deck.count(card.id) < card.max_count_in_deck:
+	#deck.append(card.id)
+
+	return deck
 
 def random_class():
 	return CardClass(random.randint(3, 10))
@@ -179,7 +215,7 @@ def weighted_card_choice(source, weights: List[int], card_sets: List[str], count
 	return [source.controller.card(card, source=source) for card in chosen_cards]
 
 
-def setup_game() -> ".game.Game":
+def setup_game( mcts=False) -> ".game.Game":
 	from .game import Game
 	from .player import Player
 
@@ -187,8 +223,12 @@ def setup_game() -> ".game.Game":
 	#class2 = random_class()
 	class1 = CardClass.MAGE
 	class2 = CardClass.MAGE
-	deck1 = random_draft(class1)
-	deck2 = random_draft(class2)
+	if mcts:
+		deck1 = mcts_draft(class1)
+		deck2 = mcts_draft(class2)
+	else:
+		deck1 = random_draft(class1)
+		deck2 = random_draft(class2)
 	player1 = Player("Player1", deck1, class1.default_hero)
 	player2 = Player("Player2", deck2, class2.default_hero)
 
@@ -259,7 +299,7 @@ def play_full_game() -> ".game.Game":
 	return game
 
 def play_full_mcts_game(expl_weight) -> ".game.Game":
-	game = setup_game()
+	game = setup_game(mcts=True)
 
 	tree = MCTS(exploration_weight=expl_weight)
 	for player in game.players:

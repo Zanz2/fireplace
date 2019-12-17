@@ -1,0 +1,47 @@
+!!Citacije, slike!!
+-- Uvod
+(kaj je hearthstone,problem, motivacija, hearthstim => fireplace, vprašanja in hipoteze, uporabljeni angleški izrazi (druge diplomske)).
+-- Hearthstone (bolj podrobno)
+kaj je hearthstone (osnove igre, pravila, zaključek igre, kompleksnost igre in "game state-a" še kej?)
+-- MCTS
+principi na hitro, delovenje, prednosti in slabosti, zgodovina uporabe MCTS v igrah(mogoče še prednosti slabosti tega v primerjavi z drugimi (total war AI)
+-- Načrtovanje implementacije
+(Simulator proti podatkovnimi množicami (za simuliranje iger in pridobivanje "znanja"), problemi fireplace-a, druge izvedbe v javi, cju, prednosti slabosti vsega, hs agent monte carlo principi).
+-- Potek implementacije
+Dejanski problemi pri uporabi fireplacea (simulator)(malce zastarel, nekaj bugov, ki sem jih fixal)
+integracija s prilagojenim razredom za MCTS (izvor tic tac toe mcts simulator github gist (kako sem ga integriral, problemi, fixi (poglej commit history in beležko)
+   - Fixi fireplace testov
+   - Funkcije getChildren in getRandomChild
+   		-(kako razlikovati različne game-state (random 128 bit identifier proti game state to xml slabosti) (reset identifier funkcija, ko simuliramo iz vozlišč nove otroke)
+   		- Undo funkcija, idealna, problemi
+   		- Deep copy, prednosti slabosti (zelo počasna proti undo, ampak bistveno bolj preprosta v tej situaciji (ogromno game state objektov)
+   		- Število otrok, ki jih get children najde (~10 proti ~20 proti ~30) (hitrost)
+   		- Odstranitev printov vsakega otroka za pohitritev
+   - Setup game funkcija
+   		- Spremembe proti originalu
+   			(naključen heroj, naključen deck, naključen igralec je prvi => da se bi znebil neodvisnih spremenljivk => oba heroja mage, deck nastavljen enak obema (midrange mage), mcts vedno gre prvi/drugi)
+   			Izboljšan "mulligan", katere karte zavržemo katere obdržimo, prej je bil random za oba, popravil sem da vse karte, ki stanejo več kot 3 mana kristale zamenjamo (razlog, prednosti slabosti)
+   - Play turn funkcija (podobna originalu, spremembe)
+   		1. Shrani trenutnega igralca
+   		2. Igraj vsako njegovo karto, ki jo lahko po vrsti od 1. do zadnje (zato karte prvo shufflam, da iz tega dobim različne poteke igre)
+   		3. Če je karta urok (spell), ali jo moramo kakorkoli drugače ciljati na tarčo so te tarče naključne ( z limitacijo pravil igre ), če karta ponuja izbire, so te izbire tudi naključne
+   		4. Z razpoložljivimi enotami od 1. do zadnje na naši strani napadamo naključne razpoložljive tarče (zato tudi prej seznam teh razpoložljivih enot "shufflal" da ni vedno od 1. do zadnje)
+   		5. Na koncu če nam še ostane mane uporabimo hero power
+   		Spremembe = if card playable and random > 0.5 v originalu, odstranitev randoma, shufflanje enot in kart, premaknil hero power na konec, bug fixi pri None Target z novimi kartami.
+   - Terminal node nagrade ( minimalno kodiranja, win = 1 , loss = 0, tie je 0.5, presenetljivo 0 tieov v 1200 igrah)
+   - Logging stvari za debugiranje
+   		( board minion count, enemy/mcts minion count, max mana count, hand count, graveyard count, deck card count, življenske točke obeh) (število popolnoma razvitih vozlišč in število simulacij)
+   		Probleme, ki sem jih prek tega odkril (is card.playable == true bi moral biti card.playable() == true
+   - Utež za raziskovanje (exploranje)
+   		return self.Q[n] / self.N[n] + self.exploration_weight * math.sqrt(
+				log_N_vertex / self.N[n]
+			)
+   - Število simulacij
+   		V hearthstonu poteza traja maksimalno 75 sekund, zato izvajamo simulacije za 74 sekund, koliko nam jih pa uspe narediti v tem času pa variira od velikosti drevesa in kje smo v igri (začetek ali konec)
+   - Beleženje rezultatov (izvedba, omejitev hitrosti)
+   -
+-- Problemi implementacije dejanske avtomatizacije igre (legalnost)
+	- Kaj bi še potreboval ( s kolegom ideja ( "predictanje" decka, ki ga igra nasprotnik))
+-- Ugotovitve, rezultati
+
+-- Zaključek, zahvale
