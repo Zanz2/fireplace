@@ -122,13 +122,18 @@ def mcts_draft(card_class: CardClass, exclude=[]):
 			# Play with more possibilities
 			continue
 		if cls.name in include:
-			if deck.count(cls) == 0:
-				deck.append(cls)
-				deck.append(cls)
+			if collection.count(cls) < cls.max_count_in_deck:
+				collection.append(cls)
+				collection.append(cls)
 		continue
 
-	if len(deck) < Deck.MAX_CARDS:
+	if len(collection) < Deck.MAX_CARDS:
 		raise Exception('Deck wasnt completely filled. Deck count was: {}'.format(Deck.MAX_CARDS))
+	else:
+		while len(deck) < Deck.MAX_CARDS:
+			card = random.choice(collection)
+			if deck.count(card.id) < card.max_count_in_deck:
+				deck.append(card.id)
 	#card = random.choice(collection)
 	#if deck.count(card.id) < card.max_count_in_deck:
 	#deck.append(card.id)
