@@ -37,7 +37,7 @@ class MCTS:
 
 	def do_rollout(self, node): # has func calls that dont work
 		"Make the tree one layer better. (Train for one iteration.)"
-		node = copy.deepcopy(node) # remove this maybe, unnecessary
+		#node_copy = copy.deepcopy(node) # remove this maybe, unnecessary
 		path = self._select(node)
 		leaf = path[-1]
 		self._expand(leaf)
@@ -49,14 +49,15 @@ class MCTS:
 		path = []
 		while True:
 			path.append(node)
-			if node not in self.children or not self.children[node] or node.is_terminal():
+			if node not in self.children or not self.children[node]:
 				# node is either unexplored or terminal
 				return path
-			#unexplored = self.children[node] - self.children.keys()
-			unexplored = []
-			for child_of_game in self.children[node]:
-				if(child_of_game not in self.children):
-					unexplored.append(child_of_game)
+			unexplored = self.children[node] - self.children.keys()
+
+			#unexplored = []
+			#for child_of_game in self.children[node]:
+			#	if(child_of_game not in self.children):
+			#		unexplored.append(child_of_game)
 			if unexplored:
 				n = unexplored.pop()
 				path.append(n)
@@ -71,15 +72,18 @@ class MCTS:
 
 	def _simulate(self, node):
 		"Returns the reward for a random simulation (to completion) of `node`"
-		if node.current_player.name == "Player1":
+		#node_copy = copy.deepcopy(node)
+		#node_copy.reset_identifier()
+		node_copy = node
+		if node_copy.current_player.name == "Player1":
 			invert_reward = False
 		else:
 			invert_reward = True
 		while True:
-			if node.is_terminal():
-				reward = node.reward()
+			if node_copy.is_terminal():
+				reward = node_copy.reward()
 				return 1 - reward if invert_reward else reward
-			node = node.find_random_child()
+			node_copy = node_copy.find_random_child()
 			invert_reward = not invert_reward
 
 	def _backpropagate(self, path, reward):

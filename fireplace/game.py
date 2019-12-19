@@ -152,13 +152,12 @@ class BaseGame(Entity):
 		#All possible successors of this board state (not really, see below)
 		# limited to 12 random ones
 		children_set = set()
-		memo = {}
 		for i in range(30):
-			deep_self = copy.deepcopy(self, memo)
+			deep_self = copy.deepcopy(self)
 			#deep_self = cPickle.loads(cPickle.dumps(self, -1))
 			# attempt to implement undo function here to not need deepcopy or use json serialize and deserialize
+			deep_self.reset_identifier()
 			child = deep_self.play_set_turn()
-			child.reset_identifier()
 			children_set.add(child)
 		return children_set
 
@@ -167,8 +166,8 @@ class BaseGame(Entity):
 		#"Random successor of this board state (for more efficient simulation)"
 		deep_self = copy.deepcopy(self)
 		#deep_self = cPickle.loads(cPickle.dumps(self, -1))
+		deep_self.reset_identifier()
 		child = deep_self.play_set_turn()
-		child.reset_identifier()
 		return child
 
 	def is_terminal(self):
