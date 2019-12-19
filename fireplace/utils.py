@@ -333,7 +333,7 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 		#if game2.__hash__() == game.__hash__() : print("enaka")
 
 		#print(game.current_player)
-		print("# expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: "+str(rollout_num))
+		print("turn: "+str(game.players[0]._max_mana)+" # expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: "+str(rollout_num))
 		play_turn(game)
 		game.reset_identifier()
 		if game.ended_on != 0: break
