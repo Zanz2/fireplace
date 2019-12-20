@@ -42,6 +42,6 @@ won game on turn: 15, currently:375/675(tied:0)
 won game on turn: 17, currently:382/666
 expl weight 1.5 @ 100 rollouts @ 30 children ( z fixed mulligan za oba, mcts in bota)
 42/71
-expl weight -10 z + 2.5 koraki @ 74 seconds of rollouts (turn time=75 sec) @ 30 children
+expl weight -10 z + 2.5 koraki @ 74 seconds of rollouts (turn time=75 sec) @ 12 children
 "-2.5": [28,22,0],
 "0": [33,17,0]

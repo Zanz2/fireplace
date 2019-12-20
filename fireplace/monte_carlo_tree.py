@@ -19,6 +19,11 @@ class MCTS:
 		self.children = dict()  # children of each node
 		self.exploration_weight = exploration_weight
 
+	def reset(self):
+		self.Q = defaultdict(int)
+		self.N = defaultdict(int)
+		self.children = dict()
+
 	def choose(self, node): # works?
 		"Choose the best successor of node. (Choose a move in the game)"
 		if node.is_terminal():
@@ -32,7 +37,7 @@ class MCTS:
 				return float("-inf")  # avoid unseen moves
 			return self.Q[n] / self.N[n]  # average reward
 
-		result = max(self.children[node], key=score)
+		result = copy.deepcopy(max(self.children[node], key=score))
 		return result
 
 	def do_rollout(self, node): # has func calls that dont work
@@ -72,9 +77,9 @@ class MCTS:
 
 	def _simulate(self, node):
 		"Returns the reward for a random simulation (to completion) of `node`"
-		#node_copy = copy.deepcopy(node)
-		#node_copy.reset_identifier()
-		node_copy = node
+		node_copy = copy.deepcopy(node)
+		node_copy.reset_identifier()
+		#node_copy = node
 		if node_copy.current_player.name == "Player1":
 			invert_reward = False
 		else:

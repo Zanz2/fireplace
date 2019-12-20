@@ -14,7 +14,7 @@ sys.path.append("..")
 
 def test_full_game():
 	do_mcts = True
-	starting_expl_weight = 2.5
+	starting_expl_weight = 1.2
 	log_dict = {}
 	if not do_mcts:
 		try:
