@@ -249,6 +249,14 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 	while True:
 
 		# iterate over our hand and play whatever is playable
+		heropower = player.hero.power
+
+		if heropower.is_usable() and random.random() < 0.33:
+			if heropower.requires_target():
+				heropower.use(target=random.choice(heropower.targets))
+			else:
+				heropower.use()
+
 		shuffled_hand = player.hand
 		random.shuffle(shuffled_hand)
 		for card in shuffled_hand:
@@ -267,8 +275,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 					# print("Choosing card %r" % (choice))
 					player.choice.choose(choice)
 
-				continue
-
 		# Randomly attack with whatever can attack
 		shuffled_characters = player.characters
 		random.shuffle(shuffled_characters)
@@ -276,15 +282,13 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 			if character.can_attack():
 				character.attack(random.choice(character.targets))
 
-		break
-
-		heropower = player.hero.power
 		if heropower.is_usable():
 			if heropower.requires_target():
 				heropower.use(target=random.choice(heropower.targets))
 			else:
 				heropower.use()
-			continue
+
+		break
 	game.end_turn()
 	return game
 
@@ -335,7 +339,9 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 		print("turn: "+str(game.player1._max_mana)+" # expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: "+str(rollout_num))
 		print("player1 hp: {}, field: {}, current hand {} ".format(game.player1.hero.health,game.player1.field, game.player1.hand))
 		print("player2 hp: {}, field: {}, current hand {} ".format(game.player2.hero.health, game.player2.field,game.player2.hand))
-		if game.ended_on != 0: break
+		print("graveyard: {}".format(game.graveyard))
+		print("player1 and player2 deck count {} and {}".format(len(game.player1.deck),len(game.player2.deck)))
+		tree.reset()
+		if game.ended: break
 
-	tree.reset()
 	return game

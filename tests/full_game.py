@@ -27,7 +27,7 @@ def test_full_game():
 		tied = 0
 		i = 0
 		while(True):
-			if( i%50 == 0 and i!= 0): # 50 games at a given expl weight
+			if( i%10 == 0 and i!= 0): # 10 games at a given expl weight
 				log_dict[starting_expl_weight] = [won, lost, tied]
 				starting_expl_weight += 2.5
 				print("expl_weight: " + str(starting_expl_weight) + "-------------------------")

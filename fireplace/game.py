@@ -107,11 +107,17 @@ class BaseGame(Entity):
 
 		while True:
 
+			heropower = player.hero.power
+			if heropower.is_usable() and random.random() < 0.33:
+				if heropower.requires_target():
+					heropower.use(target=random.choice(heropower.targets))
+				else:
+					heropower.use()
 			# iterate over our hand and play whatever is playable
 			shuffled_hand = player.hand
 			random.shuffle(shuffled_hand)
 			for card in shuffled_hand:
-				if card.is_playable():
+				if card.is_playable() and random.random() > 0.2:
 					target = None
 					if card.must_choose_one and card.choose_cards is not None:
 						card = random.choice(card.choose_cards)
@@ -125,7 +131,6 @@ class BaseGame(Entity):
 						#print("Choosing card %r" % (choice))
 						player.choice.choose(choice)
 
-					continue
 
 			# Randomly attack with whatever can attack
 			shuffled_characters = player.characters
@@ -134,15 +139,12 @@ class BaseGame(Entity):
 				if character.can_attack():
 					character.attack(random.choice(character.targets))
 
-			break
-
-			heropower = player.hero.power
 			if heropower.is_usable():
 				if heropower.requires_target():
 					heropower.use(target=random.choice(heropower.targets))
 				else:
 					heropower.use()
-				continue
+			break
 
 		passed_game.end_turn()
 		return passed_game
@@ -172,7 +174,7 @@ class BaseGame(Entity):
 
 	def is_terminal(self):
 		#"Returns True if the node has no children"
-		if self.ended_on !=0:
+		if self.ended:
 			return True
 		return False
 
