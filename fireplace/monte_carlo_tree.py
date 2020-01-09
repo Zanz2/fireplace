@@ -38,6 +38,11 @@ class MCTS:
 			return self.Q[n] / self.N[n]  # average reward
 
 		result = max(self.children[node], key=score)
+		i = 0
+		score_arr = []
+		for element in self.children[node]:
+			score_arr.append(score(element))
+			i += 1
 		return result
 
 	def do_rollout(self, node): # has func calls that dont work
@@ -78,25 +83,24 @@ class MCTS:
 	def _simulate(self, node):
 		"Returns the reward for a random simulation (to completion) of `node`"
 		node_copy = copy.deepcopy(node)
-		#node_copy = node
-		if node_copy.current_player == node_copy.player1:
-			invert_reward = False
-		else:
-			invert_reward = True
-		while True:
+
+		if node_copy.current_player.name == "ENEMY": invert_reward = False
+		if node_copy.current_player.name == "MCTS": invert_reward = True
+		while True: # preglej ta simulate pa backpropagate da vidiš da rewardi pravilno delujejo, mogoč je to bug
 			if node_copy.is_terminal():
 				reward = node_copy.reward()
-				return 1 - reward if invert_reward else reward
+				return -1 * reward if invert_reward else reward
 			node_copy = node_copy.play_set_turn()
-			invert_reward = not invert_reward
 
 	def _backpropagate(self, path, reward):
 		"Send the reward back up to the ancestors of the leaf"
 		#path = copy.deepcopy(path)
 		for node in reversed(path):
+			#if node.current_player.name == "ENEMY": reward = reward * -1
+			#if node.current_player.name == "MCTS": reward = reward
 			self.N[node] += 1
 			self.Q[node] += reward
-			reward = 1 - reward  # 1 for me is 0 for my enemy, and vice versa
+			reward = reward * -1 # 1 for me is 0 for my enemy, and vice versa
 
 	def _uct_select(self, node):
 		"Select a child of node, balancing exploration & exploitation"

@@ -335,12 +335,12 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			break
 
 		play_turn(game)
-		print("turn: "+str(game.player1._max_mana)+" # expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: "+str(rollout_num))
-		print("player1 hp: {}, field: {}, current hand {} ".format(game.player1.hero.health,game.player1.field, game.player1.hand))
+		print("turn: " + str(game.player1._max_mana) + " # expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: " + str(rollout_num))
+		print("player1 hp: {}, field: {}, current hand {} ".format(game.player1.hero.health, game.player1.field,game.player1.hand))
 		print("player2 hp: {}, field: {}, current hand {} ".format(game.player2.hero.health, game.player2.field,game.player2.hand))
 		print("graveyard: {}".format(game.graveyard))
-		print("player1 and player2 deck count {} and {}".format(len(game.player1.deck),len(game.player2.deck)))
-		print("they both had: "+str(available_mana)+" mana to use")
+		print("player1 and player2 deck count {} and {}".format(len(game.player1.deck), len(game.player2.deck)))
+		print("mcts had: " + str(available_mana) + " mana to use")
 		available_mana += 1
 		tree.reset()
 		if game.ended: break

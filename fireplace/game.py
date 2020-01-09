@@ -185,11 +185,11 @@ class BaseGame(Entity):
 	def reward(self):
 		#"Assumes `self` is terminal node. 1=win, 0=loss, .5=tie, etc"
 		reward = 0
-		if self.player1.playstate == PlayState.TIED: reward += 5
-		if self.player1.playstate == PlayState.LOST: reward += 0
-		if self.player1.playstate == PlayState.WON: reward += 10
-		reward += self.player1.hero.health
-		reward -= self.player2.hero.health
+		if self.player1.playstate == PlayState.TIED: reward = 0.5
+		if self.player1.playstate == PlayState.LOST: reward = 0
+		if self.player1.playstate == PlayState.WON: reward = 1
+		#reward += self.player1.hero.health
+		#reward -= self.player2.hero.health
 		return reward
 
 	def __hash__(self):
