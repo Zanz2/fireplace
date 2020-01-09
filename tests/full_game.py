@@ -14,7 +14,7 @@ sys.path.append("..")
 
 def test_full_game():
 	do_mcts = True
-	starting_expl_weight = 1.2
+	starting_expl_weight = -2
 	log_dict = {}
 	if not do_mcts:
 		try:
@@ -27,9 +27,9 @@ def test_full_game():
 		tied = 0
 		i = 0
 		while(True):
-			if( i%10 == 0 and i!= 0): # 10 games at a given expl weight
+			if( False and i%20 == 0 and i!= 0): # 20 games at a given expl weight
 				log_dict[starting_expl_weight] = [won, lost, tied]
-				starting_expl_weight += 2.5
+				starting_expl_weight += 1
 				print("expl_weight: " + str(starting_expl_weight) + "-------------------------")
 				won = 0
 				lost = 0

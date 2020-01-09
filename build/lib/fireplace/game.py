@@ -151,7 +151,6 @@ class BaseGame(Entity):
 		#All possible successors of this board state (not really, see below)
 		# limited to 12 random ones
 		children_set = set()
-		memo = {}
 		for i in range(16):
 			deep_self = copy.deepcopy(self, memo)
 			#deep_self = cPickle.loads(cPickle.dumps(self, -1))

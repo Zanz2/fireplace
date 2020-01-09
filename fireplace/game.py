@@ -116,15 +116,18 @@ class BaseGame(Entity):
 			# iterate over our hand and play whatever is playable
 			shuffled_hand = player.hand
 			random.shuffle(shuffled_hand)
+			card_played = False
 			for card in shuffled_hand:
-				if card.is_playable() and random.random() > 0.2:
+				if card.is_playable():
 					target = None
-					if card.must_choose_one and card.choose_cards is not None:
+					if card.must_choose_one:
 						card = random.choice(card.choose_cards)
-					if card.requires_target() and card.targets is not None:
+					if card.requires_target():
 						target = random.choice(card.targets)
 					#print("Playing %r on %r" % (card, target))
-					if (card.is_playable() and not card.requires_target()) or (card.is_playable() and card.requires_target() and target is not None): card.play(target=target)
+					if card.is_playable():
+						card.play(target=target)
+						card_played = True
 
 					if player.choice:
 						choice = random.choice(player.choice.cards)
@@ -144,7 +147,8 @@ class BaseGame(Entity):
 					heropower.use(target=random.choice(heropower.targets))
 				else:
 					heropower.use()
-			break
+			if not card_played:
+				break
 
 		passed_game.end_turn()
 		return passed_game
@@ -180,9 +184,13 @@ class BaseGame(Entity):
 
 	def reward(self):
 		#"Assumes `self` is terminal node. 1=win, 0=loss, .5=tie, etc"
-		if self.players[0].playstate == PlayState.TIED: return 0.5
-		if self.players[0].playstate == PlayState.LOST: return 0
-		if self.players[0].playstate == PlayState.WON: return 1
+		reward = 0
+		if self.player1.playstate == PlayState.TIED: reward += 5
+		if self.player1.playstate == PlayState.LOST: reward += 0
+		if self.player1.playstate == PlayState.WON: reward += 10
+		reward += self.player1.hero.health
+		reward -= self.player2.hero.health
+		return reward
 
 	def __hash__(self):
 		return hash(self.identifier)

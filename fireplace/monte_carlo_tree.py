@@ -37,7 +37,7 @@ class MCTS:
 				return float("-inf")  # avoid unseen moves
 			return self.Q[n] / self.N[n]  # average reward
 
-		result = copy.deepcopy(max(self.children[node], key=score))
+		result = max(self.children[node], key=score)
 		return result
 
 	def do_rollout(self, node): # has func calls that dont work
@@ -78,9 +78,8 @@ class MCTS:
 	def _simulate(self, node):
 		"Returns the reward for a random simulation (to completion) of `node`"
 		node_copy = copy.deepcopy(node)
-		node_copy.reset_identifier()
 		#node_copy = node
-		if node_copy.current_player.name == "Player1":
+		if node_copy.current_player == node_copy.player1:
 			invert_reward = False
 		else:
 			invert_reward = True
@@ -88,7 +87,7 @@ class MCTS:
 			if node_copy.is_terminal():
 				reward = node_copy.reward()
 				return 1 - reward if invert_reward else reward
-			node_copy = node_copy.find_random_child()
+			node_copy = node_copy.play_set_turn()
 			invert_reward = not invert_reward
 
 	def _backpropagate(self, path, reward):

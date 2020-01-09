@@ -234,8 +234,8 @@ def setup_game( mcts=False) -> ".game.Game":
 	else:
 		deck1 = random_draft(class1)
 		deck2 = random_draft(class2)
-	player1 = Player("Player1", deck1, class1.default_hero)
-	player2 = Player("Player2", deck2, class2.default_hero)
+	player1 = Player("MCTS", deck1, class1.default_hero)
+	player2 = Player("ENEMY", deck2, class2.default_hero)
 
 	game = Game(players=(player1, player2))
 	game.start()
@@ -262,13 +262,12 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 		for card in shuffled_hand:
 			if card.is_playable():
 				target = None
-				if card.must_choose_one and card.choose_cards is not None:
+				if card.must_choose_one:
 					card = random.choice(card.choose_cards)
-				if card.requires_target() and card.targets is not None:
+				if card.requires_target():
 					target = random.choice(card.targets)
 				# print("Playing %r on %r" % (card, target))
-				if (card.is_playable() and not card.requires_target()) or (
-					card.is_playable() and card.requires_target() and target is not None): card.play(target=target)
+				if card.is_playable(): card.play(target=target)
 
 				if player.choice:
 					choice = random.choice(player.choice.cards)
@@ -317,7 +316,7 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			if card.cost > 3:
 				cards_to_mulligan.append(card)
 		player.choice.choose(*cards_to_mulligan)
-
+	available_mana = 1
 
 	while True:
 		#print(game.current_player)
@@ -341,6 +340,8 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 		print("player2 hp: {}, field: {}, current hand {} ".format(game.player2.hero.health, game.player2.field,game.player2.hand))
 		print("graveyard: {}".format(game.graveyard))
 		print("player1 and player2 deck count {} and {}".format(len(game.player1.deck),len(game.player2.deck)))
+		print("they both had: "+str(available_mana)+" mana to use")
+		available_mana += 1
 		tree.reset()
 		if game.ended: break
 
