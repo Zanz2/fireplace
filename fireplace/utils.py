@@ -250,7 +250,7 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 		# iterate over our hand and play whatever is playable
 		heropower = player.hero.power
-
+		card_played = False
 		if heropower.is_usable() and random.random() < 0.33:
 			if heropower.requires_target():
 				heropower.use(target=random.choice(heropower.targets))
@@ -267,8 +267,9 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 				if card.requires_target():
 					target = random.choice(card.targets)
 				# print("Playing %r on %r" % (card, target))
-				if card.is_playable(): card.play(target=target)
-
+				if card.is_playable():
+					card.play(target=target)
+					card_played = True
 				if player.choice:
 					choice = random.choice(player.choice.cards)
 					# print("Choosing card %r" % (choice))
@@ -286,8 +287,8 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 				heropower.use(target=random.choice(heropower.targets))
 			else:
 				heropower.use()
-
-		break
+		if not card_played:
+			break
 	game.end_turn()
 	return game
 
@@ -316,11 +317,10 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			if card.cost > 3:
 				cards_to_mulligan.append(card)
 		player.choice.choose(*cards_to_mulligan)
-	available_mana = 1
 
 	while True:
 		#print(game.current_player)
-		#game2 = copy.deepcopy(game)
+		# 75 SECONDS IS MAX GAME ROUND TIME
 		t_end = time.time() + 74
 		rollout_num = 0
 		while time.time() < t_end:
@@ -335,13 +335,12 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			break
 
 		play_turn(game)
-		print("turn: " + str(game.player1._max_mana) + " # expanded nodes on tree: " + str(len(tree.children)) + " # rollouts: " + str(rollout_num))
+		print("turn: " + str(game.player1.max_mana - 1) + " # nodes on tree: " + str(len(tree.children)) + " # rollouts: " + str(rollout_num))
 		print("player1 hp: {}, field: {}, current hand {} ".format(game.player1.hero.health, game.player1.field,game.player1.hand))
 		print("player2 hp: {}, field: {}, current hand {} ".format(game.player2.hero.health, game.player2.field,game.player2.hand))
 		print("graveyard: {}".format(game.graveyard))
 		print("player1 and player2 deck count {} and {}".format(len(game.player1.deck), len(game.player2.deck)))
-		print("mcts had: " + str(available_mana) + " mana to use")
-		available_mana += 1
+		#print("mcts had: " + str(available_mana) + " mana to use")
 		tree.reset()
 		if game.ended: break
 

@@ -33,15 +33,15 @@ class MCTS:
 			return node.find_random_child()
 
 		def score(n): # works?
-			if self.N[n] == 0:
-				return float("-inf")  # avoid unseen moves
+			if self.N[n] < 3:
+				return float("-inf")  # avoid moves with too small simulations
 			return self.Q[n] / self.N[n]  # average reward
 
 		result = max(self.children[node], key=score)
 		i = 0
 		score_arr = []
 		for element in self.children[node]:
-			score_arr.append(score(element))
+			score_arr.append([self.Q[element],self.N[element],score(element)])
 			i += 1
 		return result
 
@@ -83,7 +83,7 @@ class MCTS:
 	def _simulate(self, node):
 		"Returns the reward for a random simulation (to completion) of `node`"
 		node_copy = copy.deepcopy(node)
-
+		node_copy.reset_identifier()
 		if node_copy.current_player.name == "ENEMY": invert_reward = False
 		if node_copy.current_player.name == "MCTS": invert_reward = True
 		while True: # preglej ta simulate pa backpropagate da vidiš da rewardi pravilno delujejo, mogoč je to bug

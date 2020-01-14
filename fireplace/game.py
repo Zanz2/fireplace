@@ -125,7 +125,7 @@ class BaseGame(Entity):
 					if card.requires_target():
 						target = random.choice(card.targets)
 					#print("Playing %r on %r" % (card, target))
-					if card.is_playable():
+					if card.is_playable() and random.random() < 0.2:
 						card.play(target=target)
 						card_played = True
 
@@ -158,7 +158,7 @@ class BaseGame(Entity):
 		#All possible successors of this board state (not really, see below)
 		# limited to 12 random ones
 		children_set = set()
-		for i in range(12):
+		for i in range(16):
 			deep_self = copy.deepcopy(self)
 			#deep_self = cPickle.loads(cPickle.dumps(self, -1))
 			# attempt to implement undo function here to not need deepcopy or use json serialize and deserialize
@@ -178,6 +178,18 @@ class BaseGame(Entity):
 
 	def is_terminal(self):
 		#"Returns True if the node has no children"
+		health_diff = self.player1.hero.health - self.player2.hero.health # if < -15 we lose
+		cards_diff = len(self.player1.hand) - len(self.player2.hand) # if < -3 we lose
+		max_mana = self.player1.max_mana # if = 10 above are possible
+		speed_up = True
+		if speed_up and max_mana == 10: # cutting simulations short heuristic
+			if health_diff < -10 and cards_diff < -3:
+				self.player1.playstate = PlayState.LOST
+				return True
+			if health_diff > 10 and cards_diff > 3:
+				self.player1.playstate = PlayState.WON
+				return True
+
 		if self.ended:
 			return True
 		return False
