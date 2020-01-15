@@ -6,6 +6,9 @@ from importlib import import_module
 from pkgutil import iter_modules
 from typing import List
 from xml.etree import ElementTree
+
+from past.builtins import raw_input
+
 from fireplace.monte_carlo_tree import *
 from fireplace.exceptions import GameOver
 
@@ -247,20 +250,23 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 	player = game.current_player
 
 	while True:
-
+		print("Enemy hp and field: "+ str(game.player1.hero.health) + " " + str(game.player1.field))
+		print("You have: "+str(game.current_player.mana)+" mana ")
+		print("Your hand contains: "+str(game.current_player.hand))
+		user_actions = raw_input("Input index of card to play ")
+		user_heropower = raw_input("Use heropower after cards played?(y/n) ")
+		user_actions = user_actions.split(" ")
 		# iterate over our hand and play whatever is playable
 		heropower = player.hero.power
 		card_played = False
-		if heropower.is_usable() and random.random() < 0.33:
+		if heropower.is_usable() and False:
 			if heropower.requires_target():
 				heropower.use(target=random.choice(heropower.targets))
 			else:
 				heropower.use()
 
-		shuffled_hand = player.hand
-		random.shuffle(shuffled_hand)
-		for card in shuffled_hand:
-			if card.is_playable():
+		for index, card in enumerate(player.hand):
+			if str(index) in user_actions and card.is_playable():
 				target = None
 				if card.must_choose_one:
 					card = random.choice(card.choose_cards)
@@ -275,14 +281,11 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 					# print("Choosing card %r" % (choice))
 					player.choice.choose(choice)
 
-		# Randomly attack with whatever can attack
-		shuffled_characters = player.characters
-		random.shuffle(shuffled_characters)
-		for character in shuffled_characters:
+		for character in player.characters:
 			if character.can_attack():
 				character.attack(random.choice(character.targets))
 
-		if heropower.is_usable():
+		if user_heropower == "y" and heropower.is_usable():
 			if heropower.requires_target():
 				heropower.use(target=random.choice(heropower.targets))
 			else:
