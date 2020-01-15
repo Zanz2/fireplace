@@ -178,18 +178,6 @@ class BaseGame(Entity):
 
 	def is_terminal(self):
 		#"Returns True if the node has no children"
-		health_diff = self.player1.hero.health - self.player2.hero.health # if < -15 we lose
-		cards_diff = len(self.player1.hand) - len(self.player2.hand) # if < -3 we lose
-		max_mana = self.player1.max_mana # if = 10 above are possible
-		speed_up = True
-		if speed_up and max_mana == 10: # cutting simulations short heuristic
-			if health_diff < -10 and cards_diff < -3:
-				self.player1.playstate = PlayState.LOST
-				return True
-			if health_diff > 10 and cards_diff > 3:
-				self.player1.playstate = PlayState.WON
-				return True
-
 		if self.ended:
 			return True
 		return False
