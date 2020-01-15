@@ -261,7 +261,10 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 		card_played = False
 		if heropower.is_usable() and False:
 			if heropower.requires_target():
-				heropower.use(target=random.choice(heropower.targets))
+				targets = heropower.targets
+				enemy_targets = [value for value in targets if value in game.player1.field]
+				if game.player1.hero in heropower.targets: enemy_targets.append(game.player1.hero)
+				heropower.use(target=random.choice(enemy_targets))
 			else:
 				heropower.use()
 
@@ -271,6 +274,9 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 				if card.must_choose_one:
 					card = random.choice(card.choose_cards)
 				if card.requires_target():
+					targets = card.targets
+					enemy_targets = [value for value in targets if value in game.player1.field]
+					if game.player1.hero in card.targets: enemy_targets.append(game.player1.hero)
 					target = random.choice(card.targets)
 				# print("Playing %r on %r" % (card, target))
 				if card.is_playable():
@@ -287,7 +293,10 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 		if user_heropower == "y" and heropower.is_usable():
 			if heropower.requires_target():
-				heropower.use(target=random.choice(heropower.targets))
+				targets = heropower.targets
+				enemy_targets = [value for value in targets if value in game.player1.field]
+				if game.player1.hero in heropower.targets: enemy_targets.append(game.player1.hero)
+				heropower.use(target=random.choice(enemy_targets))
 			else:
 				heropower.use()
 		if not card_played:
