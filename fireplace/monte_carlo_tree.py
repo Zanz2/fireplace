@@ -38,11 +38,6 @@ class MCTS:
 			return self.Q[n] / self.N[n]  # average reward
 
 		result = max(self.children[node], key=score)
-		i = 0
-		score_arr = []
-		for element in self.children[node]:
-			score_arr.append([self.Q[element],self.N[element],score(element)])
-			i += 1
 		return result
 
 	def do_rollout(self, node): # has func calls that dont work
