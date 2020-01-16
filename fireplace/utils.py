@@ -248,14 +248,16 @@ def setup_game( mcts=False) -> ".game.Game":
 
 def play_turn(game: ".game.Game") -> ".game.Game":
 	player = game.current_player
+	hearthstone_CLI = False
 
 	while True:
-		print("Enemy hp and field: "+ str(game.player1.hero.health) + " " + str(game.player1.field))
-		print("You have: "+str(game.current_player.mana)+" mana ")
-		print("Your hand contains: "+str(game.current_player.hand))
-		user_actions = raw_input("Input index of card to play ")
-		user_heropower = raw_input("Use heropower after cards played?(y/n) ")
-		user_actions = user_actions.split(" ")
+		if hearthstone_CLI:
+			print("Enemy hp and field: "+ str(game.player1.hero.health) + " " + str(game.player1.field))
+			print("You have: "+str(game.current_player.mana)+" mana ")
+			print("Your hand contains: "+str(game.current_player.hand))
+			user_actions = raw_input("Input index of card to play ")
+			user_heropower = raw_input("Use heropower after cards played?(y/n) ")
+			user_actions = user_actions.split(" ")
 		# iterate over our hand and play whatever is playable
 		heropower = player.hero.power
 		card_played = False
@@ -269,15 +271,20 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 				heropower.use()
 
 		for index, card in enumerate(player.hand):
-			if str(index) in user_actions and card.is_playable():
+			if (not hearthstone_CLI or str(index) in user_actions) and card.is_playable():
 				target = None
 				if card.must_choose_one:
 					card = random.choice(card.choose_cards)
 				if card.requires_target():
-					targets = card.targets
-					enemy_targets = [value for value in targets if value in game.player1.field]
-					if game.player1.hero in card.targets: enemy_targets.append(game.player1.hero)
-					target = random.choice(card.targets)
+					if hearthstone_CLI:
+						print("Your spell: " + str(card) + " Targets: " + str(card.targets))
+						# print("Your field field: " + str(game.player2.field))
+						card_target = raw_input("Please enter index of character to attack on enemy field: ")
+						if card_target.isdigit() and int(card_target) < len(card.targets):
+							target = card.targets[int(card_target)]
+					else:
+						target = random.choice(card.targets)
+
 				# print("Playing %r on %r" % (card, target))
 				if card.is_playable():
 					card.play(target=target)
@@ -289,13 +296,17 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 		for character in player.characters:
 			if character.can_attack():
-				print("Your attacker: "+ str(character)+" Targets: " + str(character.targets))
-				#print("Your field field: " + str(game.player2.field))
-				character_target = raw_input("Please enter index of character to attack on enemy field: ")
-				if character_target.isdigit() and int(character_target) < len(character.targets):
-					character.attack(character.targets[int(character_target)])
+				if hearthstone_CLI:
+					print("Your attacker: "+ str(character)+" Targets: " + str(character.targets))
+					#print("Your field field: " + str(game.player2.field))
+					character_target = raw_input("Please enter index of character to attack on enemy field: ")
+					if character_target.isdigit() and int(character_target) < len(character.targets):
+						character.attack(character.targets[int(character_target)])
+				else:
+					character.attack(random.choice(character.targets))
 
-		if user_heropower == "y" and heropower.is_usable():
+
+		if (not hearthstone_CLI or user_heropower == "y") and heropower.is_usable():
 			if heropower.requires_target():
 				targets = heropower.targets
 				enemy_targets = [value for value in targets if value in game.player1.field]
