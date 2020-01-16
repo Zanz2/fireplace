@@ -185,9 +185,14 @@ class BaseGame(Entity):
 	def reward(self):
 		#"Assumes `self` is terminal node. 1=win, 0=loss, .5=tie, etc"
 		reward = 0
-		if self.player1.playstate == PlayState.TIED: reward = 0.5
-		if self.player1.playstate == PlayState.LOST: reward = 0
-		if self.player1.playstate == PlayState.WON: reward = 1
+		if self.player1.playstate == PlayState.TIED:
+			reward += 0.05
+		if self.player1.playstate == PlayState.LOST:
+			reward += 0
+		if self.player1.playstate == PlayState.WON:
+			reward += 0.05
+			reward += (self.player1.hero.health/30)
+			if reward > 1: reward = 1
 		#reward += self.player1.hero.health
 		#reward -= self.player2.hero.health
 		return reward

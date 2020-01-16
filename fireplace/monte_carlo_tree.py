@@ -33,7 +33,7 @@ class MCTS:
 			return node.find_random_child()
 
 		def score(n): # works?
-			if self.N[n] < 3:
+			if self.N[n] < 5:
 				return float("-inf")  # avoid moves with too small simulations
 			return self.Q[n] / self.N[n]  # average reward
 
