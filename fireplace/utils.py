@@ -289,7 +289,11 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 		for character in player.characters:
 			if character.can_attack():
-				character.attack(random.choice(character.targets))
+				print("Your attacker: "+ str(character)+" Targets: " + str(character.targets))
+				#print("Your field field: " + str(game.player2.field))
+				character_target = raw_input("Please enter index of character to attack on enemy field: ")
+				if character_target.isdigit() and int(character_target) < len(character.targets):
+					character.attack(character.targets[int(character_target)])
 
 		if user_heropower == "y" and heropower.is_usable():
 			if heropower.requires_target():
