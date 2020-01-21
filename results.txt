@@ -45,3 +45,11 @@ expl weight 1.5 @ 100 rollouts @ 30 children ( z fixed mulligan za oba, mcts in 
 expl weight -10 z + 2.5 koraki @ 74 seconds of rollouts (turn time=75 sec) @ 12 children
 "-2.5": [28,22,0],
 "0": [33,17,0]
+-------------------------below is after reward fix
+16 children:
+won game on turn: 15, currently:10/12(tied:0) expl = 2
+won game on turn: 29, currently:30/31(tied:0) expl = 4
+won game on turn: 19, currently:24/27(tied:0) expl = 10
+10 children:
+112/120 expl = 3
+11/11 expl = 1.2

@@ -27,14 +27,14 @@ def test_full_game():
 		tied = 0
 		i = 0
 		while(True):
-			if( False and i%20 == 0 and i!= 0): # 20 games at a given expl weight
+			if( i%20 == 0 and i!= 0): # 20 games at a given expl weight
 				log_dict[starting_expl_weight] = [won, lost, tied]
-				starting_expl_weight += 1
+				#starting_expl_weight += 1
 				print("expl_weight: " + str(starting_expl_weight) + "-------------------------")
-				won = 0
-				lost = 0
-				i = 0
-				tied = 0
+				#won = 0
+				#lost = 0
+				#i = 0
+				#tied = 0
 				output = json.dumps(log_dict)
 				with open('result_auto_logged.txt', 'w') as outfile:
 					json.dump(output, outfile)
