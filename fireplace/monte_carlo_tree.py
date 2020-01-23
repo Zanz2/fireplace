@@ -18,11 +18,13 @@ class MCTS:
 		self.N = defaultdict(int)  # total visit count for each node
 		self.children = dict()  # children of each node
 		self.exploration_weight = exploration_weight
+		self.win_prob = 0
 
 	def reset(self):
 		self.Q = defaultdict(int)
 		self.N = defaultdict(int)
 		self.children = dict()
+		self.win_prob = 0
 
 	def choose(self, node): # works?
 		"Choose the best successor of node. (Choose a move in the game)"
@@ -38,6 +40,7 @@ class MCTS:
 			return self.Q[n] / self.N[n]  # average reward
 
 		result = max(self.children[node], key=score)
+		self.win_prob = score(result)
 		return result
 
 	def do_rollout(self, node): # has func calls that dont work

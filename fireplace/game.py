@@ -125,7 +125,7 @@ class BaseGame(Entity):
 					if card.requires_target():
 						target = random.choice(card.targets)
 					#print("Playing %r on %r" % (card, target))
-					if card.is_playable() and random.random() < 0.2:
+					if card.is_playable() and random.random() > 0.33:
 						card.play(target=target)
 						card_played = True
 
@@ -185,10 +185,10 @@ class BaseGame(Entity):
 		max_mana = self.player1.max_mana  # if = 10 above are possible
 		speed_up = True
 		if speed_up and max_mana > 6:  # cutting simulations short heuristic
-			if health_diff < -15 and cards_diff < -3 and minion_diff < -1:
+			if health_diff < -10 and cards_diff < -3 and minion_diff < -1:
 				self.player1.playstate = PlayState.LOST
 				return True
-			if health_diff > 15 and cards_diff > 3 and minion_diff > 1:
+			if health_diff > 10 and cards_diff > 3 and minion_diff > 1:
 				self.player1.playstate = PlayState.WON
 				return True
 

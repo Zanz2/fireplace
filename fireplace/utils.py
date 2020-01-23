@@ -360,14 +360,15 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			game = tree.choose(game)
 		except RuntimeError:
 			break
-
+		if game.ended: break
 		play_turn(game)
 		print("turn: " + str(game.player1.max_mana - 1) + " # nodes on tree: " + str(len(tree.children)) + " # rollouts: " + str(rollout_num))
-		print("player1 hp: {}, field: {}, current hand {} ".format(game.player1.hero.health, game.player1.field,game.player1.hand))
-		print("player2 hp: {}, field: {}, current hand {} ".format(game.player2.hero.health, game.player2.field,game.player2.hand))
+		print("player1 hp: {}, field: {}, current hand {} ".format(game.player1.hero.health, game.player1.field, game.player1.hand))
+		print("player2 hp: {}, field: {}, current hand {} ".format(game.player2.hero.health, game.player2.field, game.player2.hand))
 		print("graveyard: {}".format(game.graveyard))
-		print("player1 and player2 deck count {} and {}".format(len(game.player1.deck), len(game.player2.deck)))
+		#print("player1 and player2 deck count {} and {}".format(len(game.player1.deck), len(game.player2.deck)))
 		#print("mcts had: " + str(available_mana) + " mana to use")
+		print("we estimate the probability of winning to be "+str(tree.win_prob)+" %")
 		tree.reset()
 		if game.ended: break
 
