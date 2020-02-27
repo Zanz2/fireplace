@@ -344,14 +344,14 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			if card.cost > 3:
 				cards_to_mulligan.append(card)
 		player.choice.choose(*cards_to_mulligan)
-
+		first = True
 	while True:
 		#print(game.current_player)
 		# 75 SECONDS IS MAX GAME ROUND TIME
 		t_end = time.time() + 74
 		rollout_num = 0
 		#while time.time() < t_end:
-		while rollout_num < 1000: # max rollouts before memory error on 16 gb laptop = between 1000 (crash between 1000-1500)
+		while not first and rollout_num < 1000: # max rollouts before memory error on 16 gb laptop = between 1000 (crash between 1000-1500)
 			if rollout_num % 100 == 0:
 				print(rollout_num)
 			try:
@@ -363,6 +363,7 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 			game = tree.choose(game)
 		except RuntimeError:
 			break
+		first = False
 		if game.ended: break
 		play_turn(game)
 		print("turn: " + str(game.player1.max_mana - 1) + " # nodes on tree: " + str(len(tree.children)) + " # rollouts: " + str(rollout_num))

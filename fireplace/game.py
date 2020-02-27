@@ -183,7 +183,7 @@ class BaseGame(Entity):
 		cards_diff = len(self.player1.hand) - len(self.player2.hand)  # if < -3 we lose
 		minion_diff = len(self.player1.field) - len(self.player2.field)
 		max_mana = self.player1.max_mana  # if = 10 above are possible
-		speed_up = True
+		speed_up = False
 		if speed_up and max_mana > 6:  # cutting simulations short heuristic
 			if health_diff < -10 and cards_diff < -3 and minion_diff < -1:
 				self.player1.playstate = PlayState.LOST

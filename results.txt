@@ -52,5 +52,6 @@ won game on turn: 15, currently:25/30(tied:0) expl = 2
 won game on turn: 29, currently:30/31(tied:0) expl = 4
 won game on turn: 19, currently:26/30(tied:0) expl = 10
 10 children:
-112/120 expl = 3
-109/120 expl = 1.2
+112/120 expl = 3 speedup
+79/80 expl = 1.2 speedup
+
