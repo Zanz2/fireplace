@@ -40,7 +40,7 @@ class MCTS:
 			return self.Q[n] / self.N[n]  # average reward
 
 		result = max(self.children[node], key=score)
-		self.win_prob = score(result)
+		self.win_prob = score(result) * 100
 		return result
 
 	def do_rollout(self, node): # has func calls that dont work

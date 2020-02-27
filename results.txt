@@ -14,7 +14,7 @@ won game, currently:77/100
 expl weight: 10 @ 50 rollouts
 won game, currently:28/34
 
-ODSTRANU ENEMY RANDOM > 0.5 DA PLAYA KARTE, dodav shuffled hand shuffled attacks na mcts
+- odstranjen random.random()>0.5 z igranje kart spodaj
 expl weight 10 @ 100 rollouts @ 8 children
 23/29
 expl weight 4 @ 60 rollouts @ 12 children
@@ -24,11 +24,11 @@ won game, currently:20/32
 expl weight 0.9 @ 60 rollouts @ 12 children
 won game, currently:13/14
 expl weight 0.9 @ 60 rollouts @ 8 children
-1/3 je slabo zgledalo sm kr ustavu
+
 expl weight 0.9 @ 60 rollouts @ 12 children (new rewards 0, 0.5,1)
 won game on turn: 35, currently:123/159(tied:0)
--- na tej točki ugotoviv da če karta nima targetov je ne igra ( bug v kodi, sm to fiksu, iiiinn...)
-lost game on turn: 35, currently:12/43(tied:0) ne dela.
+-- na tej točki ugotovil da če karta nima targetov je ne igra ( bug v kodi, spodaj odpravljen)
+lost game on turn: 35, currently:12/43(tied:0)
 expl weight 20 @ 60 rollouts @ 16 children
 lost game on turn: 30, currently:41/66
 expl weight 1 @ 60 rollouts @ 16 children
@@ -37,19 +37,20 @@ expl weight 1 @ 100 rollouts @ 16 children
 lost game on turn: 18, currently:5/11
 won game on turn: 15, currently:3/4(tied:0)
 won game on turn: 27, currently:4/7(tied:0)
-expl weight 50 @ 500 rollouts @ 16 children (mulligan je še treba fixat da bo tole good)
+expl weight 50 @ 500 rollouts @ 16 children (spodaj popravljen začetni filter kart)
 won game on turn: 15, currently:375/675(tied:0)
 won game on turn: 17, currently:382/666
-expl weight 1.5 @ 100 rollouts @ 30 children ( z fixed mulligan za oba, mcts in bota)
+expl weight 1.5 @ 100 rollouts @ 30 children ( filter kart podan tudi nasprotniku)
 42/71
 expl weight -10 z + 2.5 koraki @ 74 seconds of rollouts (turn time=75 sec) @ 12 children
 "-2.5": [28,22,0],
 "0": [33,17,0]
--------------------------below is after reward fix
+-------------------------Popravljena velika napaka pri odločanju naslednje poteze (povprečje nagrade), ----------------------------------------
+-------------------------Kar sledi so rezultati trenutne verzije ------------------------------------------------------------------------------
 16 children:
-won game on turn: 15, currently:10/12(tied:0) expl = 2
+won game on turn: 15, currently:25/30(tied:0) expl = 2
 won game on turn: 29, currently:30/31(tied:0) expl = 4
-won game on turn: 19, currently:24/27(tied:0) expl = 10
+won game on turn: 19, currently:26/30(tied:0) expl = 10
 10 children:
 112/120 expl = 3
-11/11 expl = 1.2
+109/120 expl = 1.2

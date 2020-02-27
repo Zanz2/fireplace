@@ -5,3 +5,4 @@ venv/
 venv-pypy3/
 fireplace.egg-info/
 venv2/
+build/

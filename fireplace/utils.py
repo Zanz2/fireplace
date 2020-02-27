@@ -248,7 +248,7 @@ def setup_game( mcts=False) -> ".game.Game":
 
 def play_turn(game: ".game.Game") -> ".game.Game":
 	player = game.current_player
-	hearthstone_CLI = False
+	hearthstone_CLI = True
 
 	while True:
 		if hearthstone_CLI:
@@ -350,7 +350,10 @@ def play_full_mcts_game(expl_weight) -> ".game.Game":
 		# 75 SECONDS IS MAX GAME ROUND TIME
 		t_end = time.time() + 74
 		rollout_num = 0
-		while time.time() < t_end:
+		#while time.time() < t_end:
+		while rollout_num < 1000: # max rollouts before memory error on 16 gb laptop = between 1000 (crash between 1000-1500)
+			if rollout_num % 100 == 0:
+				print(rollout_num)
 			try:
 				tree.do_rollout(game)
 				rollout_num += 1
