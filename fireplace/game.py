@@ -158,7 +158,7 @@ class BaseGame(Entity):
 		#All possible successors of this board state (not really, see below)
 		# limited to 12 random ones
 		children_set = set()
-		for i in range(10):
+		for i in range(1):
 			deep_self = copy.deepcopy(self)
 			#deep_self = cPickle.loads(cPickle.dumps(self, -1))
 			# attempt to implement undo function here to not need deepcopy or use json serialize and deserialize
